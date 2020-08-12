@@ -1,9 +1,9 @@
-name: Get Sudoku puzzle links
+name: Publish shiny rates
 
 on:
   schedule:
-    # this is 11AM UTC = 6AM Central, in time for me to wake up
-    - cron: '0 5,17 * * *'
+    # these are 12AM, 6AM, 12PM, 6PM Central
+    - cron: '0 5,11,17,23 * * *'
   push:
     branches: [ master ]
 
@@ -15,18 +15,6 @@ jobs:
     # Check out code
     - uses: actions/checkout@v2
 
-    # Set the date
-    - name: Set the date
-      run: echo "::set-env name=TODAY::$(date +'%Y-%m-%d')"
-
-    # Set up the output file
-    - name: Set up puzzle output file
-      run: | 
-        echo \# Sudoku puzzles for $TODAY >> puzzle_output.md
-        echo -n "Generated at " >> puzzle_output.md
-        date >> puzzle_output.md
-        echo >> puzzle_output.md
-
     # Run Python stuff
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -35,18 +23,9 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install requests beautifulsoup4
+        pip install requests pandas
     - name: Run Python scraper
-      run: python sudoku.py >> puzzle_output.md
-
-    # Run Node stuff
-    - name: Set up Node
-      uses: actions/setup-node@v1
-      with:
-        node-version: 14
-    - run: npm install
-    - name: Run Node scraper
-      run: node index.js >> puzzle_output.md
+      run: python main.py
 
     # Show everything (temporary)
     - name: List puzzle output
@@ -58,8 +37,7 @@ jobs:
         name: out
         path: puzzle_output.md
 
-    - name: Create puzzle issue
-      uses: peter-evans/create-issue-from-file@v2
-      with:
-        title: Daily Sudokus for ${{ env.TODAY }}
-        content-filepath: ./puzzle_output.md
+    - name: Publish back to master
+      uses: mikeal/publish-to-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
