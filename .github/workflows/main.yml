@@ -27,16 +27,6 @@ jobs:
     - name: Run Python scraper
       run: python main.py
 
-    # Show everything (temporary)
-    - name: List puzzle output
-      run: cat puzzle_output.md
-
-    - name: Upload puzzle output
-      uses: actions/upload-artifact@v1
-      with:
-        name: out
-        path: puzzle_output.md
-
     - name: Publish back to master
       uses: mikeal/publish-to-github-action@master
       env:
