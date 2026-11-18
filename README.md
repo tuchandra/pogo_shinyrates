@@ -11,8 +11,7 @@ Ever since I learned about [Github Actions](https://github.com/features/actions)
 
 ## Repo contents
 This repo is pretty simple:
- * `main.py` is the main Python script, which is something like 20 lines of actual code
- * `requirements.txt` says that I need requests and pandas
+ * `main.py` is the main Python script, which is something like 20 lines of actual code; its inline script metadata says that I need requests and pandas, so `uv run main.py` runs it
  * `.github/workflows/main.yml` is the workflow configuration file
 
 And that's it!

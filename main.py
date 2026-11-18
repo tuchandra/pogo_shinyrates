@@ -1,3 +1,11 @@
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+#     "pandas>=3.1",
+#     "requests>=2.34",
+# ]
+# ///
+
 """
 main.py -- scrape shinyrates.com
 """
@@ -13,7 +21,7 @@ def get_shinyrates() -> pd.DataFrame:
 
     url = "https://shinyrates.com/data/rate"
     data = requests.get(url).json()
-    data_csv = pd.DataFrame.from_dict(data)
+    data_csv = pd.DataFrame(data)
     return data_csv
 
 
